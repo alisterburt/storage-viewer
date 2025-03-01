@@ -4,10 +4,13 @@
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm run build:backend && pnpm run build:frontend",
+    "build:shared": "pnpm --filter shared build",
     "build:frontend": "pnpm --filter frontend build",
     "build:backend": "pnpm --filter backend build",
+    "dev:shared": "pnpm --filter shared dev",
     "dev:frontend": "pnpm --filter frontend dev",
-    "dev:backend": "pnpm --filter backend dev"
+    "dev:backend": "pnpm --filter backend dev",
+    "llm": "pnpm dlx repomix -i ncdu-example-data" 
   },
   "devDependencies": {
     "@types/node": "^22.13.8"
