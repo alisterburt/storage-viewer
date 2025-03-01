@@ -1,0 +1,79 @@
+# Filesystem Directory Size Visualization - Implementation Checklist
+
+## 1. Project Setup and Basic Structure
+- [x] Initialize Vite project with React and TypeScript
+- [x] Set up project directory structure
+- [ ] Install shadcn/ui and its dependencies
+- [ ] Create basic app layout with header
+- [ ] Set up main content area
+
+## 2. Data Modeling with TypeScript
+- [ ] Define FileSystemEntry interface
+- [ ] Define FileEntry interface
+- [ ] Define DirectoryEntry interface
+- [ ] Define DirectoryContents interface
+- [ ] Create utility function for formatting file sizes
+- [ ] Create mock data structure for testing
+
+## 3. Basic Directory List Component
+- [ ] Implement DirectoryItem component
+- [ ] Implement FileItem component
+- [ ] Implement DirectoryList component
+- [ ] Sort entries by size (largest first)
+- [ ] Apply basic styling using shadcn/ui
+
+## 4. Navigation State and Path Display
+- [ ] Create useNavigation hook for state management
+- [ ] Implement PathBar component
+- [ ] Create ParentDirectory component (".." entry)
+- [ ] Update App component to use new components
+- [ ] Connect navigation state to directory display
+
+## 5. Click Navigation Implementation
+- [ ] Update DirectoryItem with onClick handler
+- [ ] Update ParentDirectory with onClick handler
+- [ ] Enhance useNavigation with navigateToDirectory function
+- [ ] Enhance useNavigation with navigateToParent function
+- [ ] Connect navigation functions in App component
+- [ ] Test directory navigation functionality
+
+## 6. NCDU Data Parsing
+- [ ] Create utility function to parse NCDU JSON format
+- [ ] Implement function to extract directory data by path
+- [ ] Create sample NCDU JSON export for testing
+- [ ] Update App to use NCDU data instead of mock data
+- [ ] Test navigation with real data format
+
+## 7. Keyboard Navigation
+- [ ] Implement focus management for DirectoryList
+- [ ] Add visual highlighting for selected items
+- [ ] Implement Up/Down arrow key navigation
+- [ ] Implement Enter key for directory navigation
+- [ ] Implement Backspace key for parent navigation
+- [ ] Implement Home/End keys for first/last item navigation
+- [ ] Integrate keyboard navigation with existing navigation functions
+- [ ] Test full keyboard navigation
+
+## 8. Error Handling
+- [ ] Create ErrorMessage component
+- [ ] Implement error state management in navigation hook
+- [ ] Create error boundary component
+- [ ] Update App and DirectoryList to handle and display errors
+- [ ] Test with simulated error scenarios
+
+## 9. Quota Information Display
+- [ ] Create QuotaInfo component
+- [ ] Update NCDU data parsing to extract quota information
+- [ ] Implement progress bar for quota visualization
+- [ ] Integrate QuotaInfo into App layout
+- [ ] Style according to UI layout specification
+
+## 10. UI Polish and Final Integration
+- [ ] Review and enhance overall UI spacing and alignment
+- [ ] Improve DirectoryList with alternating row colors
+- [ ] Enhance keyboard navigation visual feedback
+- [ ] Make PathBar segments clickable for direct navigation
+- [ ] Implement loading states
+- [ ] Perform final integration testing
+- [ ] Add documentation and comments
+- [ ] Verify all requirements are met
