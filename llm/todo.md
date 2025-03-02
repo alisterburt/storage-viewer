@@ -23,19 +23,19 @@
 - [x] Apply basic styling using shadcn/ui
 
 ## 4. Navigation State and Path Display
-- [x]] Create useNavigation hook for state management
+- [x] Create useNavigation hook for state management
 - [x] Implement PathBar component
 - [x] Create ParentDirectory component (".." entry)
 - [x] Update App component to use new components
 - [x] Connect navigation state to directory display
 
 ## 5. Click Navigation Implementation
-- [ ] Update DirectoryItem with onClick handler
-- [ ] Update ParentDirectory with onClick handler
-- [ ] Enhance useNavigation with navigateToDirectory function
-- [ ] Enhance useNavigation with navigateToParent function
-- [ ] Connect navigation functions in App component
-- [ ] Test directory navigation functionality
+- [x] Update DirectoryItem with onClick handler
+- [x] Update ParentDirectory with onClick handler
+- [x] Enhance useNavigation with navigateToDirectory function
+- [x] Enhance useNavigation with navigateToParent function
+- [x] Connect navigation functions in App component
+- [x] Test directory navigation functionality
 
 ## 6. NCDU Data Parsing
 - [ ] Create utility function to parse NCDU JSON format
