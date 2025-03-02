@@ -1,3 +1,4 @@
 **/node_modules
+**/dist
 ncdu-example-data
 repomix-output.txt
