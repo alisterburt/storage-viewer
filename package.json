@@ -10,7 +10,7 @@
     "dev:shared": "pnpm --filter shared dev",
     "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter backend dev",
-    "llm": "pnpm dlx repomix -i ncdu-example-data" 
+    "llm": "pnpm dlx repomix -i llm,ncdu-example-data " 
   },
   "devDependencies": {
     "@types/node": "^22.13.8"

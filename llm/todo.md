@@ -3,24 +3,24 @@
 ## 1. Project Setup and Basic Structure
 - [x] Initialize Vite project with React and TypeScript
 - [x] Set up project directory structure
-- [ ] Install shadcn/ui and its dependencies
-- [ ] Create basic app layout with header
-- [ ] Set up main content area
+- [x] Install shadcn/ui and its dependencies
+- [x] Create basic app layout with header
+- [x] Set up main content area
 
 ## 2. Data Modeling with TypeScript
-- [ ] Define FileSystemEntry interface
-- [ ] Define FileEntry interface
-- [ ] Define DirectoryEntry interface
-- [ ] Define DirectoryContents interface
-- [ ] Create utility function for formatting file sizes
-- [ ] Create mock data structure for testing
+- [x] Define FileSystemEntry interface
+- [x] Define FileEntry interface
+- [x] Define DirectoryEntry interface
+- [x] Define DirectoryContents interface
+- [x] Create utility function for formatting file sizes
+- [x] Create mock data structure for testing
 
 ## 3. Basic Directory List Component
-- [ ] Implement DirectoryItem component
-- [ ] Implement FileItem component
-- [ ] Implement DirectoryList component
-- [ ] Sort entries by size (largest first)
-- [ ] Apply basic styling using shadcn/ui
+- [x] Implement DirectoryItem component
+- [x] Implement FileItem component
+- [x] Implement DirectoryList component
+- [x] Sort entries by size (largest first)
+- [x] Apply basic styling using shadcn/ui
 
 ## 4. Navigation State and Path Display
 - [ ] Create useNavigation hook for state management
