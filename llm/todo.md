@@ -38,11 +38,11 @@
 - [x] Test directory navigation functionality
 
 ## 6. NCDU Data Parsing
-- [ ] Create utility function to parse NCDU JSON format
-- [ ] Implement function to extract directory data by path
-- [ ] Create sample NCDU JSON export for testing
-- [ ] Update App to use NCDU data instead of mock data
-- [ ] Test navigation with real data format
+- [x] Create utility function to parse NCDU JSON format
+- [x] Implement function to extract directory data by path
+- [x] Create sample NCDU JSON export for testing
+- [x] Update App to use NCDU data instead of mock data
+- [x] Test navigation with real data format
 
 ## 7. Keyboard Navigation
 - [ ] Implement focus management for DirectoryList

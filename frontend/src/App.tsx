@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { DirectoryList } from './components/DirectoryList';
 import { PathBar } from './components/PathBar';
-import { useNavigation } from './hooks/useNavigation';
+import { useNCDUNavigation } from './hooks/useNCDUNavigation';
 import { Card, CardContent } from './components/ui/card';
+import { Alert, AlertDescription } from './components/ui/alert';
+import { Loader2 } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -13,8 +15,10 @@ function App() {
     navigateToDirectory,
     navigateToParent,
     navigateToRoot,
-    navigateToPath
-  } = useNavigation();
+    navigateToPath,
+    isLoading,
+    error
+  } = useNCDUNavigation();
 
   // Set up global keyboard event listeners
   useEffect(() => {
@@ -44,24 +48,41 @@ function App() {
       
       <main className="flex-1 p-4 bg-background overflow-auto">
         <div className="max-w-6xl mx-auto">
-          {/* Path navigation bar */}
-          <Card className="mb-4">
-            <CardContent className="p-2">
-              <PathBar
-                rootPath={rootPath}
-                currentPath={currentPath}
-                onNavigateToRoot={navigateToRoot}
-                onNavigateToPath={navigateToPath}
-              />
-            </CardContent>
-          </Card>
+          {/* Error state */}
+          {error && (
+            <Alert className="mb-4" variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           
-          {/* Directory contents */}
-          <DirectoryList 
-            directoryContents={currentDirectory}
-            onNavigateToDirectory={navigateToDirectory}
-            onNavigateToParent={navigateToParent}
-          />
+          {/* Loading state */}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <span className="ml-2">Loading directory data...</span>
+            </div>
+          ) : (
+            <>
+              {/* Path navigation bar */}
+              <Card className="mb-4">
+                <CardContent className="p-2">
+                  <PathBar
+                    rootPath={rootPath}
+                    currentPath={currentPath}
+                    onNavigateToRoot={navigateToRoot}
+                    onNavigateToPath={navigateToPath}
+                  />
+                </CardContent>
+              </Card>
+              
+              {/* Directory contents */}
+              <DirectoryList 
+                directoryContents={currentDirectory}
+                onNavigateToDirectory={navigateToDirectory}
+                onNavigateToParent={navigateToParent}
+              />
+            </>
+          )}
         </div>
       </main>
     </div>
