@@ -1,7 +1,7 @@
 // src/components/FileItem.tsx
 import React from 'react';
 import { File } from 'lucide-react';
-import { formatSize } from '@/lib/utils';
+import { formatSize } from 'shared';
 import { FileEntry } from 'shared';
 
 interface FileItemProps {

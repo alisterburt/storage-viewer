@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
-    "build": "pnpm run build:backend && pnpm run build:frontend",
+    "build": "pnpm run build:shared && pnpm run build:backend && pnpm run build:frontend",
     "build:shared": "pnpm --filter shared build",
     "build:frontend": "pnpm --filter frontend build",
     "build:backend": "pnpm --filter backend build",

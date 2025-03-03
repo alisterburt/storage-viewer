@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
 import { DirectoryEntry, DirectoryContents, NCDUData } from 'shared';
-import { parseNCDUData, getDirectoryContents, getSampleNCDUData } from '@/lib/ncdu-utils';
+import { fetchDirectoryContents, fetchNCDUMetadata } from '@/lib/api-client';
 
 interface NavigationState {
   currentPath: string[];
   currentDirectory: DirectoryContents;
   rootPath: string;
-  ncduData: NCDUData;
+  ncduData: Partial<NCDUData>;
   isLoading: boolean;
   error: string | null;
 }
@@ -30,27 +30,26 @@ export function useNCDUNavigation(): NavigationState & NavigationActions {
       totalItems: 0
     },
     rootPath: '',
-    ncduData: {} as NCDUData,
+    ncduData: {},
     isLoading: true,
     error: null
   });
 
-  // Load NCDU data on component mount
+  // Load initial data
   useEffect(() => {
-    const loadNCDUData = async () => {
+    const loadInitialData = async () => {
       try {
-        // In a real application, this would fetch from an API
-        // For now, we use our sample data
-        const rawData = getSampleNCDUData();
-        const parsedData = parseNCDUData(rawData);
+        // Fetch metadata first
+        const metadata = await fetchNCDUMetadata();
         
-        const rootDirectory = parsedData.rootDirectory;
+        // Then fetch root directory contents
+        const rootDirectory = await fetchDirectoryContents([]);
         
         setNavigationState({
           currentPath: [],
           currentDirectory: rootDirectory,
-          rootPath: parsedData.rootPath,
-          ncduData: parsedData,
+          rootPath: metadata.rootPath || '/',
+          ncduData: metadata,
           isLoading: false,
           error: null
         });
@@ -64,113 +63,122 @@ export function useNCDUNavigation(): NavigationState & NavigationActions {
       }
     };
 
-    loadNCDUData();
+    loadInitialData();
   }, []);
 
   // Navigate to a subdirectory
   const navigateToDirectory = useCallback((directory: DirectoryEntry) => {
-    setNavigationState(prevState => {
-      const newPath = [...prevState.currentPath, directory.name];
-      
-      try {
-        // Parse the raw data again to navigate to the new path
-        const rawData = getSampleNCDUData();
-        const ncduData = JSON.parse(rawData);
-        const newDirectory = getDirectoryContents(ncduData.root, newPath);
-        
-        return {
-          ...prevState,
-          currentPath: newPath,
-          currentDirectory: newDirectory
-        };
-      } catch (error) {
-        console.error('Navigation error:', error);
-        return {
-          ...prevState,
-          error: `Failed to navigate to ${directory.name}`
-        };
-      }
-    });
-  }, []);
+    setNavigationState(prevState => ({
+      ...prevState,
+      isLoading: true
+    }));
 
-  // Navigate to parent directory
-  const navigateToParent = useCallback(() => {
-    setNavigationState(prevState => {
-      if (prevState.currentPath.length === 0) return prevState;
-      
-      const newPath = [...prevState.currentPath];
-      newPath.pop();
-      
-      try {
-        // Parse the raw data again to navigate to the parent path
-        const rawData = getSampleNCDUData();
-        const ncduData = JSON.parse(rawData);
-        const newDirectory = getDirectoryContents(ncduData.root, newPath);
-        
-        return {
+    const newPath = [...navigationState.currentPath, directory.name];
+    
+    fetchDirectoryContents(newPath)
+      .then(newDirectory => {
+        setNavigationState(prevState => ({
           ...prevState,
           currentPath: newPath,
           currentDirectory: newDirectory,
+          isLoading: false,
           error: null
-        };
-      } catch (error) {
+        }));
+      })
+      .catch(error => {
         console.error('Navigation error:', error);
-        return {
+        setNavigationState(prevState => ({
           ...prevState,
-          error: 'Failed to navigate to parent directory'
-        };
-      }
-    });
-  }, []);
+          error: `Failed to navigate to ${directory.name}`,
+          isLoading: false
+        }));
+      });
+  }, [navigationState.currentPath]);
+
+  // Navigate to parent directory
+  const navigateToParent = useCallback(() => {
+    if (navigationState.currentPath.length === 0) return;
+    
+    setNavigationState(prevState => ({
+      ...prevState,
+      isLoading: true
+    }));
+    
+    const newPath = [...navigationState.currentPath];
+    newPath.pop();
+    
+    fetchDirectoryContents(newPath)
+      .then(newDirectory => {
+        setNavigationState(prevState => ({
+          ...prevState,
+          currentPath: newPath,
+          currentDirectory: newDirectory,
+          isLoading: false,
+          error: null
+        }));
+      })
+      .catch(error => {
+        console.error('Navigation error:', error);
+        setNavigationState(prevState => ({
+          ...prevState,
+          error: 'Failed to navigate to parent directory',
+          isLoading: false
+        }));
+      });
+  }, [navigationState.currentPath]);
 
   // Navigate to root directory
   const navigateToRoot = useCallback(() => {
-    setNavigationState(prevState => {
-      try {
-        // Parse the raw data to get the root directory
-        const rawData = getSampleNCDUData();
-        const ncduData = JSON.parse(rawData);
-        const rootDirectory = getDirectoryContents(ncduData.root, []);
-        
-        return {
+    setNavigationState(prevState => ({
+      ...prevState,
+      isLoading: true
+    }));
+    
+    fetchDirectoryContents([])
+      .then(rootDirectory => {
+        setNavigationState(prevState => ({
           ...prevState,
           currentPath: [],
           currentDirectory: rootDirectory,
+          isLoading: false,
           error: null
-        };
-      } catch (error) {
+        }));
+      })
+      .catch(error => {
         console.error('Navigation error:', error);
-        return {
+        setNavigationState(prevState => ({
           ...prevState,
-          error: 'Failed to navigate to root directory'
-        };
-      }
-    });
+          error: 'Failed to navigate to root directory',
+          isLoading: false
+        }));
+      });
   }, []);
 
   // Navigate to a specific path
   const navigateToPath = useCallback((path: string[]) => {
-    setNavigationState(prevState => {
-      try {
-        // Parse the raw data to navigate to the specified path
-        const rawData = getSampleNCDUData();
-        const ncduData = JSON.parse(rawData);
-        const newDirectory = getDirectoryContents(ncduData.root, path);
-        
-        return {
+    setNavigationState(prevState => ({
+      ...prevState,
+      isLoading: true
+    }));
+    
+    fetchDirectoryContents(path)
+      .then(newDirectory => {
+        setNavigationState(prevState => ({
           ...prevState,
           currentPath: path,
           currentDirectory: newDirectory,
+          isLoading: false,
           error: null
-        };
-      } catch (error) {
+        }));
+      })
+      .catch(error => {
         console.error('Navigation error:', error);
-        return {
+        setNavigationState(prevState => ({
           ...prevState,
-          error: `Failed to navigate to path: ${path.join('/')}`
-        };
-      }
-    });
+          error: `Failed to navigate to path: ${path.join('/')}`,
+          isLoading: false
+        }));
+      });
   }, []);
 
   return {

@@ -27,16 +27,3 @@ export interface DirectoryContents {
     totalItems: number;
     error?: string;
 }
-
-/**
- * NCDU specific data format representation
- */
-export interface NCDUData {
-    rootPath: string;
-    totalSize: number;
-    availableSpace: number;
-    totalFiles: number;
-    maxFiles: number;
-    scanTime: Date;
-    rootDirectory: DirectoryContents;
-}

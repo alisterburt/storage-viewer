@@ -2,14 +2,24 @@
   "name": "shared",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsup",
+    "dev": "tsup --watch"
   },
   "dependencies": {},
   "devDependencies": {
+    "tsup": "^8.0.0",
     "typescript": "~5.7.2"
   }
 }

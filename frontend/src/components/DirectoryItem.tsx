@@ -2,8 +2,7 @@
 import React from 'react';
 import { Folder } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { formatSize } from '@/lib/utils';
-import { DirectoryEntry } from 'shared';
+import { DirectoryEntry, formatSize} from 'shared';
 
 interface DirectoryItemProps {
   directory: DirectoryEntry;
