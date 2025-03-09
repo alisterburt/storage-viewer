@@ -53,29 +53,10 @@ app.get('/api/directories', async (req, res) => {
     const requestedPath = req.query.path as string || '';
     const pathSegments = requestedPath.split('/').filter(segment => segment.length > 0);
     
-    // Extract the items from rootDirectory to pass to getDirectoryContents
-    // Fix: Create a unified array type by ensuring all items have the same structure
-    const rootItems = [
-      ...ncduData!.rootDirectory.directories.map(dir => ({
-        name: dir.name,
-        asize: dir.size,
-        dsize: dir.size,
-        isDirectory: true as const,
-        children: []
-      })),
-      ...ncduData!.rootDirectory.files.map(file => ({
-        name: file.name,
-        asize: file.size,
-        dsize: file.size,
-        isDirectory: false as const,
-        children: undefined  // Add children property but set it to undefined for files
-      }))
-    ];
-    
-    // Get directory contents for the specified path
-    const directoryContents = getDirectoryContents(rootItems, pathSegments);
-    
-    res.json(directoryContents);
+    // Use the path lookup for direct O(1) access to directory contents
+    const pathKey = pathSegments.join('/');
+
+    res.json(ncduData!.pathLookup[pathKey]);
   } catch (error) {
     console.error('Error serving directory data:', error);
     res.status(500).json({ 
