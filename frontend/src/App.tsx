@@ -42,10 +42,6 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col">
-      <header className="bg-primary text-primary-foreground p-4 shadow-md">
-        <h1 className="text-xl font-bold">Filesystem Directory Size Viewer</h1>
-      </header>
-      
       <main className="flex-1 p-4 bg-background overflow-auto">
         <div className="max-w-6xl mx-auto">
           {/* Error state */}
@@ -64,7 +60,7 @@ function App() {
           ) : (
             <>
               {/* Path navigation bar */}
-              <Card className="mb-4">
+              <Card className="mb-4 py-0">
                 <CardContent className="p-2">
                   <PathBar
                     rootPath={rootPath}
