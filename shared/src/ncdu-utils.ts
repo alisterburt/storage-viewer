@@ -79,8 +79,12 @@ export function parseNCDUData(rawData: string): NCDUData {
         // Convert to our internal format
         const rootItems = convertExportDirectory(rootDir);
 
-        // Build the directory contents
-        const rootDirectory = getDirectoryContents(rootItems.children || [], []);
+        // Build the directory contents for root
+        const rootChildren = rootItems.children || [];
+        const rootDirectory = getDirectoryContents(rootChildren, []);
+
+        // Build the path lookup with accurate recursive sizes
+        const pathLookup = buildPathLookup(rootChildren);
 
         return {
             rootPath,
@@ -89,7 +93,8 @@ export function parseNCDUData(rawData: string): NCDUData {
             availableSpace: 0, // Not available in export format
             totalFiles: countFiles(rootItems),
             maxFiles: 0, // Not available in export format
-            rootDirectory
+            rootDirectory,
+            pathLookup // Add the path lookup
         };
     } catch (error) {
         console.error('Error parsing NCDU data:', error);
