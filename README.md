@@ -117,4 +117,4 @@ This will start both the backend and frontend in watch mode, with hot reloading 
 
 ## License
 
-[MIT](LICENSE)
+[BSD-3](LICENSE)
