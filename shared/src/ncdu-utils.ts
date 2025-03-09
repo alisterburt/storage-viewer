@@ -2,7 +2,7 @@ import {
     DirectoryContents,
     DirectoryEntry,
     FileEntry,
-    FileSystemEntry,
+    PathIndexedDirectory
 } from './types';
 
 export interface NCDUData {
@@ -13,6 +13,7 @@ export interface NCDUData {
     maxFiles: number;
     scanTime: Date;
     rootDirectory: DirectoryContents;
+    pathLookup: PathIndexedDirectory;
 }
 
 
