@@ -246,9 +246,7 @@ export function getDirectoryContents(
     };
 }
 
-/**
- * Format a byte size into a human-readable string
- */
+
 export function formatSize(bytes: number): string {
     if (bytes === 0) return '0 B';
 
@@ -259,4 +257,77 @@ export function formatSize(bytes: number): string {
     const precision = i >= 4 ? 2 : 1;
 
     return `${(bytes / Math.pow(1024, i)).toFixed(precision)} ${units[i]}`;
+}
+
+export function buildPathLookup(rootItems: NCDUItem[]): PathIndexedDirectory {
+    const lookup: PathIndexedDirectory = {};
+    
+    // Recursive function to process each directory and its children
+    function processDirectory(items: NCDUItem[], currentPath: string[] = []): number {
+        // Create DirectoryContents object
+        const directories: DirectoryEntry[] = [];
+        const files: FileEntry[] = [];
+        let totalSize = 0;
+
+        // Process each item in the directory
+        for (const item of items) {
+            if (item.isDirectory && item.children) {
+                // Process subdirectory and get its total size
+                const pathToChild = [...currentPath, item.name];
+                const pathString = pathToChild.join('/');
+                
+                // Recursively process children and get total size
+                const dirSize = processDirectory(item.children, pathToChild);
+                
+                // Create directory entry with accurate size
+                const directoryEntry: DirectoryEntry = {
+                    name: item.name,
+                    size: dirSize, // Use calculated total size
+                    isDirectory: true,
+                    itemCount: item.children.length
+                };
+                
+                directories.push(directoryEntry);
+                totalSize += dirSize;
+            } else {
+                // Process file
+                const fileSize = item.asize || item.dsize || 0;
+                const fileEntry: FileEntry = {
+                    name: item.name,
+                    size: fileSize,
+                    isDirectory: false,
+                    extension: item.name.includes('.') ? item.name.split('.').pop() : undefined
+                };
+                
+                files.push(fileEntry);
+                totalSize += fileSize;
+            }
+        }
+
+        // Create the DirectoryContents object for this path
+        const pathString = currentPath.join('/');
+        const directoryContents: DirectoryContents = {
+            current: {
+                name: currentPath.length > 0 ? currentPath[currentPath.length - 1] : 'root',
+                size: totalSize, // Accurate total size
+                isDirectory: true,
+                itemCount: items.length
+            },
+            path: currentPath,
+            directories: directories.sort((a, b) => b.size - a.size), // Sort by size (largest first)
+            files: files.sort((a, b) => b.size - a.size), // Sort by size (largest first)
+            totalItems: directories.length + files.length
+        };
+        
+        // Add to lookup
+        lookup[pathString] = directoryContents;
+        
+        // Return the total size for parent directories to use
+        return totalSize;
+    }
+    
+    // Start processing from root
+    processDirectory(rootItems);
+    
+    return lookup;
 }
