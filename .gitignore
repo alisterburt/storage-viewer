@@ -2,3 +2,4 @@
 **/dist
 ncdu-example-data
 repomix-output.txt
+.vscode/**
