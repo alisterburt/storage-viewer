@@ -27,3 +27,7 @@ export interface DirectoryContents {
     totalItems: number;
     error?: string;
 }
+
+export interface PathIndexedDirectory {
+    [path: string]: DirectoryContents;
+}
