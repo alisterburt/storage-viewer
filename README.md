@@ -7,6 +7,8 @@ A simple web application for interactively visualizing disk usage data generated
 - Interactive filesystem navigation with a user-friendly interface
 - Automatic data refresh at configurable intervals
 
+![screenshot of UI](./assets/screenshot.png)
+
 ## Prerequisites
 
 Before building and running this application, ensure you have the following installed:
